@@ -42,13 +42,36 @@ def plot_player_position():
    counts = [center_count, guard_count, forward_count]
 
    plt.figure(figsize=(8, 6))
-   plt.bar(labels, counts, color = "blue", "green", "red"])
+   plt.bar(labels, counts, color = "blue",)
    plt.title("MVP Position: Center, Guard, Forward")
    plt.xlabel("MVP Position")
    plt.ylabel("Number of MVPs")
    plt.grid(axis="y", linestyle="--", alpha=0.7)
    plt.tight_layout()
    plt.show()
+
+def make_scatter_plot(mvp_status_frame):
+   champion_vc = mvp_status_frame[mvp_status_frame["MVP status"].isin(["Champion", "Vice-Champion"])]
+   dummy_MVP_status = pd.get_dummies(champion_vc["MVP status"], drop_first=True)
+   xs = sm.add_constant(dummy_MVP_status)
+   model = sm.OLS(champion_vc["Count"], xs)
+   results = model.fit()
+   plt.scatter(dummy_MVP_status["Vice-Champion"], champion_vc["Count"], label="Vice-CHampion")
+   plt.scatter(dummy_MVP_status["Champion"], champion_vc["Count"], label="Champion")
+   plt.xlabel("MVP Status")
+   plt.ylabel("Count")
+   plt.title("MVP Status Counts")
+   plt.show()
+
+
+def main():
+   plot_mvp_status()
+   plot_player_position()
+   mvp_status_df = get_mvp_status_frame()
+   make_scatter_plot(mvp_status_df)
+
+if __name__ == "__main__":
+   main()
 
 
 
