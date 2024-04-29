@@ -1,5 +1,7 @@
+import statsmodels.api as sm
 import pandas as pd 
 import matplotlib.pyplot as plt
+import numpy as np
 
 def get_mvp_status_frame():
    df = pd.read_csv('NBA Finals and MVP.csv', index_col=0)
@@ -9,7 +11,7 @@ def get_mvp_status_frame():
    return mvp_status_df
 
 def plot_mvp_status():
-   mvp_status_df = get_mvp_status_frame('NBA Finals and MVP.csv')
+   mvp_status_df = get_mvp_status_frame()
    champion_count = mvp_status_df[mvp_status_df["MVP Status"] == "Champion"]["Count"].sum()
    not_reached_final_count = mvp_status_df[mvp_status_df["MVP Status"] == "Not reached Final"]["Count"].sum()
    labels = ["Champion", "Not reached Final"]
@@ -27,7 +29,7 @@ def plot_mvp_status():
 def get_position_frame():
    df = pd.read_csv('NBA Finals and MVP.csv', index_col = 0)
    player_position = df["MVP Position"].value_counts()
-   position_df = pd.DataFrame(player_position.reset_index()
+   position_df = pd.DataFrame(player_position.reset_index())
    position_df.columns = ["MVP Position", "Count"]
    return position_df
 
@@ -35,18 +37,19 @@ def plot_player_position():
    position_df = get_position_frame('NBA Finals and MVP.csv')
    center_count = position_df[position_df["MVP Position"] == "Center"]["Count"].sum()
    guard_count = position_df[position_df["MVP Position"] == "Guard"]["Count"].sum()
-   forward_count = position_df[position_df["MVP Position] == "Forward"]["Count"].sum()
+   forward_count = position_df[position_df["MVP Position"] == "Forward"]["Count"].sum()
    labels = ["Center", "Guard", "Forward"]
    counts = [center_count, guard_count, forward_count]
 
    plt.figure(figsize=(8, 6))
-   plt.bar(labels, counts, color = "blue", "green"])
+   plt.bar(labels, counts, color = "blue", "green", "red"])
    plt.title("MVP Position: Center, Guard, Forward")
    plt.xlabel("MVP Position")
    plt.ylabel("Number of MVPs")
    plt.grid(axis="y", linestyle="--", alpha=0.7)
    plt.tight_layout()
    plt.show()
+
 
 
 
